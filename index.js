@@ -1,6 +1,8 @@
+require("dotenv").config();
 const { MongoClient } = require("mongodb");
 
-const uri = "mongodb://127.0.0.1:27017";
+const uri = process.env.MONGO_URI || "mongodb://127.0.0.1:27017";
+const dbName = process.env.DB_NAME || "company_db";
 const client = new MongoClient(uri);
 
 async function run() {
@@ -8,7 +10,7 @@ async function run() {
     await client.connect();
     console.log("Connected to MongoDB");
 
-    const db = client.db("company_db");
+    const db = client.db(dbName);
     const users = db.collection("users");
 
     // CREATE
