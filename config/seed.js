@@ -1,9 +1,10 @@
-require("dotenv").config();
-const { connectDB, closeDB } = require("./db");
-
+import 'dotenv/config';
+// import { connectDB, closeDB } from './db.js';
+import { connectDB, closeDB } from './db.js';
+import User from '../models/users.js';
 async function seedUsers() {
   try {
-    const db = await require("./db").connectDB();
+    const db = await connectDB();
 
     const newUsers = [
       {
@@ -22,11 +23,11 @@ async function seedUsers() {
       },
     ];
 
-    const result = await db.collection("users").insertMany(newUsers);
-    console.log(`Added ${result.insertedIds.length} users`);
-    console.log("New User IDs:", result.insertedIds);
+    const result = await User.insertMany(newUsers);
+    console.log(`Added ${result.length} users`);
+    console.log("New User IDs:", result.map(user => user._id));
 
-    const allUsers = await db.collection("users").find().toArray();
+    const allUsers = await User.find();
     console.log(` Total users: ${allUsers.length}`);
 
     await closeDB();

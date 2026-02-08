@@ -1,25 +1,8 @@
-require("dotenv").config();
-const express = require("express");
-const { connectDB } = require("./data/db");
+import "dotenv/config";
+import app from "./app.js";
+import { connectDB } from "./config/db.js";
 
-const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Middleware
-app.use(express.json());
-
-// Health check
-app.get("/", (req, res) => {
-  res.json({ message: "Company API", status: "running" });
-});
-
-// Routes
-app.use("/users", require("./routes/users"));
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
-});
 
 // Start server
 async function start() {
@@ -34,8 +17,6 @@ async function start() {
   }
 }
 
-if (require.main === module) {
-  start();
-}
+start();
 
-module.exports = app;
+export default app;
